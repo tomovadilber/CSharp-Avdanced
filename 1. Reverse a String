@@ -1,0 +1,29 @@
+// Stacks and Queues
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Text;
+
+namespace _03._Plant_Discovery
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            string input = Console.ReadLine();
+
+            Stack<char> output = new Stack<char>();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                output.Push(input[i]);
+            }
+
+            Console.WriteLine(String.Join("", output));
+        
+        }
+    }
+}
