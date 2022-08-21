@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Text;
+
+namespace _03._Plant_Discovery
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            string[] input = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+            Queue<int> nums = new Queue<int>();
+            Queue<string> operators = new Queue<string>();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == "-" || input[i] == "+")
+                {
+                    operators.Enqueue(input[i]);
+                }
+                else
+                {
+                    nums.Enqueue(int.Parse(input[i]));
+                }
+            }
+            //nums.Reverse();
+            //operators.Reverse();
+            
+
+            
+            int number = nums.Dequeue(); // 2 + 5 + 10 - 2 - 1
+            string op = "";
+
+           
+
+            while (operators.Count != 0) // 1 2 10 5 2
+            {
+                op = operators.Dequeue(); // - - + + 
+                if (op == "+")
+                {
+                    number += nums.Dequeue(); 
+                }
+                else if (op == "-")
+                {
+                    number -= nums.Dequeue();
+                }
+            }
+
+            Console.WriteLine(number);
+        
+        }
+    }
+}
+
