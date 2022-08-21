@@ -1,0 +1,115 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Collections;
+using System.Text;
+
+namespace Balanced
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            int[] cupCapacity = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray(); // queue
+            int[] bottles = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray(); // stack
+
+            int wastedWater = 0;
+
+            Queue<int> totalCups = new Queue<int>();
+            Stack<int> totalBottles = new Stack<int>();
+
+            for (int i = 0; i < cupCapacity.Length; i++)
+            {
+                totalCups.Enqueue(cupCapacity[i]);
+            }
+
+            for (int i = 0; i < bottles.Length; i++)
+            {
+                totalBottles.Push(bottles[i]);
+            }
+
+
+            while (true)
+            {
+
+                int currentCup = totalCups.Peek(); // 4 2 10 5
+                int currentBottle = totalBottles.Peek(); // 3 15 15 11 6
+
+                if (currentBottle >= currentCup)
+                {
+                    currentCup = totalCups.Dequeue();
+                    currentBottle = totalBottles.Pop();
+
+                    currentBottle -= currentCup;
+                    wastedWater += currentBottle;
+                }
+                else if (currentBottle < currentCup) // bottle 2, 3, 5 --> cup 6 (2, 2, 2)
+                {
+                    currentCup = totalCups.Dequeue();
+                    currentBottle = totalBottles.Pop();
+
+                    while (currentBottle < currentCup)
+                    {
+                        currentCup -= currentBottle;
+
+                        if (totalBottles.Any())
+                        {
+                            currentBottle = totalBottles.Pop();
+                        }
+                        else
+                        {
+                            break;
+                        }
+
+                        
+                    }
+
+                    currentBottle -= currentCup;
+                    wastedWater += currentBottle;
+
+                }
+
+                if (!totalCups.Any())
+                {
+
+                    Console.WriteLine($"Bottles: {string.Join(" ", totalBottles)}");
+                    Console.WriteLine($"Wasted litters of water: {wastedWater}");
+
+                    break;
+                }
+                else if (!totalBottles.Any())
+                {
+                    Console.WriteLine($"Cups: {string.Join(" ", totalCups)}");
+                    Console.WriteLine($"Wasted litters of water: {wastedWater}");
+
+                    break;
+                }
+
+
+
+            }
+        }
+    }
+}
+
+
+
+//if (!totalCups.Any())
+//{
+
+//    Console.WriteLine($"Bottles: {string.Join(" ", totalBottles)}");
+//    Console.WriteLine($"Wasted litters of water: {wastedWater}");
+
+//    return;
+//}
+//else if (!totalBottles.Any())
+//{
+//    Console.WriteLine($"Cups: {string.Join(" ", totalCups)}");
+//    Console.WriteLine($"Wasted litters of water: {wastedWater}");
+
+//    return;
+//}
+
+//currentBottle = totalBottles.Pop();
