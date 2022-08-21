@@ -1,0 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Text;
+
+namespace _03._Plant_Discovery
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            string[] input = Console.ReadLine().Split(", ").ToArray();
+            
+
+            Queue<string> songs = new Queue<string>();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (!songs.Contains(input[i]))
+                {
+                    songs.Enqueue(input[i]);
+                }
+            }
+
+            while (songs.Count != 0)
+            {
+                string commands = Console.ReadLine();
+
+                if (commands.StartsWith("Play"))
+                {
+                    songs.Dequeue();
+                }
+                else if (commands.StartsWith("Add"))
+                {
+                    string songToBeAdded = commands.Substring(4);
+                    if (!songs.Contains(songToBeAdded))
+                    {
+                        songs.Enqueue(songToBeAdded);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{songToBeAdded} is already contained!");
+                    }
+                }
+                else if (commands.StartsWith("Show"))
+                {
+                    Console.WriteLine(String.Join(", ", songs));
+                }
+            }
+
+            Console.WriteLine("No more songs!");
+        }
+    }
+}
+
