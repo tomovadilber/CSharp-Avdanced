@@ -1,0 +1,89 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Collections;
+using System.Text;
+
+namespace Balanced
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int operations = int.Parse(Console.ReadLine());
+
+            Stack<string> result = new Stack<string>();
+
+            StringBuilder text = new StringBuilder();
+            
+
+            for (int i = 0; i < operations; i++)
+            {
+                string[] commands = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+
+                if (commands[0] == "1")
+                {
+                    result.Push(text.ToString());
+                    text.Append(commands[1]);
+                     // abc, dfg, tyu, iuy
+                }
+                else if (commands[0] == "2")
+                {
+                    if (text.Length == 0)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        result.Push(text.ToString());
+
+                        int toBeDeleted = (text.Length - int.Parse(commands[1]));
+                        text.Remove(toBeDeleted, int.Parse(commands[1]));
+
+                             
+                    }
+
+
+                }
+                else if (commands[0] == "3")
+                {
+
+                    if (text.Length == 0)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        int toBePrinted = (int.Parse(commands[1])) - 1;
+                        if (toBePrinted<0)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Console.WriteLine(text[toBePrinted]);
+                        }
+                        
+                    }
+
+                }
+                else if (commands[0] == "4")
+                {
+                    
+                    {
+                        
+                        string previous = result.Pop();
+                        text.Clear();
+                        text.Append(previous);
+                        
+                    }
+
+                }
+
+            }
+
+        }
+    }
+}
