@@ -1,0 +1,129 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Collections;
+using System.Text;
+
+namespace Balanced
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int greenLightDuration = int.Parse(Console.ReadLine());
+            int freeWindowDuration = int.Parse(Console.ReadLine());
+
+            int greenPasses = greenLightDuration;
+            int winowPasses = freeWindowDuration;
+
+            int numberOfCars = 0;
+
+            Queue<string> cars = new Queue<string>();
+
+
+            while (true)
+            {
+                string commands = Console.ReadLine();
+
+                if (commands == "END")
+                {
+                    break;
+                }
+                else
+                {
+                    if (commands != "green")
+                    {
+                        cars.Enqueue(commands);
+                    }
+                    else if(commands == "green")
+                    {
+
+                        if (cars.Count != 0)
+                        {
+                            StringBuilder currentCar = new StringBuilder(cars.Dequeue()); // mercedes
+                            string car = currentCar.ToString();
+                            greenPasses = greenLightDuration;
+                            winowPasses = freeWindowDuration;
+
+                            for (int i = 0; i < greenLightDuration; i++)
+                            {
+
+
+                                if (currentCar.Length == 0)
+                                {
+                                    numberOfCars++;
+
+                                    if (cars.Count != 0)
+                                    {
+                                        currentCar = new StringBuilder(cars.Dequeue());
+                                        car = currentCar.ToString();
+                                        currentCar.Remove(0, 1);
+                                        greenPasses--;
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+
+                                }
+                                else
+                                {
+                                    currentCar.Remove(0, 1);
+                                    greenPasses--;
+                                    if (currentCar.Length == 0 && greenPasses == 0)
+                                    {
+                                        numberOfCars++;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (currentCar.Length > 0)
+                            {
+                                for (int i = 0; i < freeWindowDuration; i++)
+                                {
+
+                                    if (currentCar.Length == 0)
+                                    {
+                                        numberOfCars++;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        currentCar.Remove(0, 1);
+                                        winowPasses--;
+                                        if (currentCar.Length == 0)
+                                        {
+                                            numberOfCars++;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (winowPasses == 0 && currentCar.Length != 0)
+                                {
+                                    Console.WriteLine("A crash happened!");
+                                    Console.WriteLine($"{car} was hit at {currentCar[0]}.");
+                                    return;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        
+                        
+                        
+                    }
+                }
+            }
+
+            Console.WriteLine("Everyone is safe.");
+            Console.WriteLine($"{numberOfCars} total cars passed the crossroads.");
+            
+
+        }
+    }
+}
