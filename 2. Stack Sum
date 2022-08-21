@@ -1,0 +1,71 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Text;
+
+namespace _03._Plant_Discovery
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            int[] input = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+
+            Stack<int> stack = new Stack<int>();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                stack.Push(input[i]);
+            }
+
+
+            while (true)
+            {
+                string[] commands = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+                if (commands[0].ToLower() == "end")
+                {
+                    break;
+                }
+                else
+                {
+                    if (commands[0].ToLower() == "add")
+                    {
+                        stack.Push(int.Parse(commands[1]));
+                        stack.Push(int.Parse(commands[2]));
+                    }
+                    else if (commands[0].ToLower() == "remove")
+                    {
+                        if (stack.Count == int.Parse(commands[1]))
+                        {
+                            stack.Clear();
+                        }
+                        else if(stack.Count > int.Parse(commands[1]))
+                        {
+                            for (int i = 0; i < int.Parse(commands[1]); i++)
+                            {
+                                stack.Pop();
+                            }
+                        }
+                        else if (stack.Count < int.Parse(commands[1]))
+                        {
+                            continue;
+                        }
+                    }
+                }
+            }
+            int result = 0;
+
+            foreach (var item in stack)
+            {
+                result += item;
+            }
+
+            Console.WriteLine($"Sum: {result}");
+        
+        }
+    }
+}
+
