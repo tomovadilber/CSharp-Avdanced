@@ -1,0 +1,116 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Text;
+
+namespace _03._Plant_Discovery
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            int N = int.Parse(Console.ReadLine());
+
+            Queue<int> litters = new Queue<int>();
+            Queue<int> distances = new Queue<int>();
+
+
+
+            int[] input = new int[N*2];
+
+
+            for (int i = 0; i < N*2; i+=2)
+            {
+                int[] nums = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+                input[i] = nums[0];
+                input[i+1] = nums[1];
+
+            }
+
+            for (int i = 0; i < N*2; i+=2)
+            {
+                int first = input[i];
+                int second = input[i+1];
+                litters.Enqueue(first);
+                distances.Enqueue(second);
+            }
+
+            
+
+            
+
+            int litter = litters.Peek();
+            int distance = distances.Peek();
+
+            int index = 0;
+
+            int routations = 0;
+
+            while (routations != N)
+            {
+
+
+
+                if (litter >= distance)
+                {
+
+                    litter -= distance;
+                    int lll = litters.Dequeue();
+                    int ddd = distances.Dequeue();
+                    litters.Enqueue(lll);
+                    distances.Enqueue(ddd);
+                    litter += litters.Peek();
+                    distance = distances.Peek();
+                    routations++;
+
+                }
+                else
+                {
+                    litters.Clear();
+                    distances.Clear();
+
+                    for (int i = 0; i < N * 2; i += 2)
+                    {
+                        int first = input[i];
+                        int second = input[i + 1];
+                        litters.Enqueue(first);
+                        distances.Enqueue(second);
+                    }
+
+                    index++;
+                    routations = 0;
+
+                    for (int i = 0; i < index; i++)
+                    {
+                        int lll = litters.Dequeue();
+                        int ddd = distances.Dequeue();
+                        litters.Enqueue(lll);
+                        distances.Enqueue(ddd);
+                    }
+
+
+                    
+                    litter = litters.Peek();
+                    distance = distances.Peek();
+                    
+                }
+
+            }
+
+            Console.WriteLine(index);
+
+
+
+            //    3
+            //   [0] -> 1 5
+            //   [1] -> 10 3
+            //   [2] -> 3 4
+
+
+
+        }
+    }
+}
+
