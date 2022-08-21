@@ -1,0 +1,86 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Collections;
+using System.Text;
+
+namespace Balanced
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int priceOfBullet = int.Parse(Console.ReadLine()); // bullet cost
+            int sizeOfGunBarrel = int.Parse(Console.ReadLine()); // how many shoots per rotation before Ping or Bang
+
+            int[] bullets = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray(); // size of bullets -> has to be Stack
+            int[] locks = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray(); // size of locks -> has to be Queue
+
+
+            int money = int.Parse(Console.ReadLine()); // money
+
+            Stack<int> totalBullets = new Stack<int>();
+            Queue<int> totalLocks = new Queue<int>();
+
+            for (int i = 0; i < bullets.Length; i++)
+            {
+                totalBullets.Push(bullets[i]);
+            }
+
+            for (int i = 0; i < locks.Length; i++)
+            {
+                totalLocks.Enqueue(locks[i]);
+            }
+
+            int bulletsCounter = 0;
+
+            while (true)
+            {
+                if (totalBullets.Count == 0 && totalLocks.Count != 0)
+                {
+                    Console.WriteLine($"Couldn't get through. Locks left: {totalLocks.Count()}");
+                    return;
+                }
+                else if (totalBullets.Count != 0 && totalLocks.Count != 0)
+                {
+                    int currentBullet = totalBullets.Pop();
+                    money -= priceOfBullet;
+                    int currentLock = totalLocks.Peek();
+                    bulletsCounter++;
+
+                    if (currentBullet <= currentLock)
+                    {
+                        totalLocks.Dequeue();
+                        Console.WriteLine("Bang!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ping!");
+                    }
+
+                    if (bulletsCounter == sizeOfGunBarrel && totalBullets.Count != 0)
+                    {
+                        bulletsCounter = 0;
+                        Console.WriteLine("Reloading!");
+                    }
+                }
+                else if (totalBullets.Count != 0 && totalLocks.Count == 0)
+                {
+                    Console.WriteLine($"{totalBullets.Count()} bullets left. Earned ${money}");
+                    return;
+                }
+                else if (totalBullets.Count == 0 && totalLocks.Count == 0)
+                {
+                    Console.WriteLine($"{totalBullets.Count()} bullets left. Earned ${money}");
+                    return;
+                }
+                
+                
+            }
+            
+            
+
+        }
+    }
+}
